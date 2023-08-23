@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lutopanestore-dev-122806-authRole",
+      "UnauthRoleArn": "arn:aws:iam::153705271142:role/amplify-lutopanestore-dev-122806-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::153705271142:role/amplify-lutopanestore-dev-122806-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lutopanestore-dev-122806-deployment",
+      "UnauthRoleName": "amplify-lutopanestore-dev-122806-unauthRole",
+      "StackName": "amplify-lutopanestore-dev-122806",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:153705271142:stack/amplify-lutopanestore-dev-122806/75d4dff0-416d-11ee-af2e-0694c0c931c8",
+      "AmplifyAppId": "d2b644s5v99b15"
+    }
+  }
+}
