@@ -51,7 +51,35 @@
     }
   },
   "function": {
-    "UserFunction": {
+    "checkoutFunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lutopanestore"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "lutopanestorelayer1"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "lutopanestorelayer1": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    },
+    "userFunction": {
       "build": true,
       "dependsOn": [
         {
@@ -80,11 +108,56 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_checkoutFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkoutFunction"
+        }
+      ]
     },
-    "lutopanestorelayer1": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer"
+    "AMPLIFY_function_checkoutFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkoutFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_lutopanestorelayer1_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "lutopanestorelayer1"
+        }
+      ]
+    },
+    "AMPLIFY_function_lutopanestorelayer1_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "lutopanestorelayer1"
+        }
+      ]
+    },
+    "AMPLIFY_function_userFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "userFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_userFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "userFunction"
+        }
+      ]
     }
   }
 }

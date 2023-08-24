@@ -1,9 +1,154 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type Company @model {
+  id: ID!
+  profile: CompanyProfile!
+  stores: [Store] @hasMany(indexName: "byCompany", fields: ["id"])
+  products: [Product] @hasMany(indexName: "byCompany", fields: ["id"])
+}
 
-type Todo @model {
+type Store @model {
+  id: ID!
+  companyId: ID! @index(name: "byCompany", queryField: "getStoresByCompany")
+  company: Company @belongsTo(fields: ["companyId"])
+  profile: StoreProfile!
+  type: String! @default(value: "Front_Store") # Front_Store # Warehouse or Bodega
+  products: [Product] @hasMany(indexName: "byStore", fields: ["id"])
+  orders: [Order] @hasMany(indexName: "byStore", fields: ["id"])
+  categories: [Category] @hasMany(indexName: "byStore", fields: ["id"])
+  customers: [User] @manyToMany(relationName: "StoreCustomers")
+  address: Address
+  loyverse: AWSJSON
+}
+
+type Category @model {
   id: ID!
   name: String!
-  description: String
+  storeId: ID! @index(name: "byStore", queryField: "getCategoriesByStore")
+  store: Store @belongsTo(fields: ["storeId"])
+  products: [Product] @hasMany(indexName: "byCategory", fields: ["id"])
+  loyverse: AWSJSON
+}
+
+type Product @model {
+  id: ID!
+  name: String!
+  storeId: ID! @index(name: "byStore", queryField: "getProductsByStore")
+  store: Store @belongsTo(fields: ["storeId"])
+  companyId: ID! @index(name: "byCompany", queryField: "getProductsByCompany")
+  company: Company @belongsTo(fields: ["companyId"])
+  categoryId: ID @index(name: "byCategory", queryField: "getProductsByCategory")
+  category: Category @belongsTo(fields: ["categoryId"])
+  slug: String!
+  variants: [Variant] @hasMany(indexName: "byProduct", fields: ["id"])
+  loyverse: AWSJSON
+  # reviews: [Review] soon
+}
+
+type Variant @model {
+  id: ID!
+  productId: ID! @index(name: "byProduct", queryField: "getVariantsByProduct")
+  product: Product @belongsTo(fields: ["productId"])
+  sku: String!
+  soldByWeight: Boolean! @default(value: "false")
+  price: Float @default(value: "0.00")
+  salePrice: Float @default(value: "0.00")
+  inventory: Float @default(value: "0.00")
+  option_one: VariantOption
+  option_two: VariantOption
+  option_three: VariantOption
+  loyverse: AWSJSON
+  inCartLineItems: [CartLineItem] @hasMany
+}
+
+type User @model {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  number_1: String
+  number_2: String
+  address: Address
+  loyverse: UserCustomer
+  orderedStores: [Store] @manyToMany(relationName: "StoreCustomers")
+  orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
+  cart: Cart @hasOne
+}
+
+type Cart @model {
+  id: ID!
+  user: User @belongsTo
+  lineItems: [CartLineItem] @hasMany
+}
+
+type CartLineItem @model {
+  variantId: ID!
+  variant: Variant @belongsTo(fields: ["variantId"])
+  quantity: Float!
+}
+
+type Order @model {
+  id: ID!
+  customerId: ID! @index(name: "byUser", queryField: "getOrdersByUser")
+  customer: User @belongsTo(fields: ["customerId"])
+  storeId: ID! @index(name: "byStore", queryField: "getOrdersByStore")
+  store: Store @belongsTo(fields: ["storeId"])
+  receiptNumber: String!
+  receiptType: String! # SALE # REFUND
+  orderDate: AWSDateTime!
+  lineItems: [LineItem]
+  loyverse: AWSJSON
+}
+
+type StoreProfile {
+  name: String!
+  email: String
+  phone: String
+  address: Address
+}
+
+type VariantOption {
+  name: String!
+  value: String!
+}
+
+type CompanyProfile {
+  name: String!
+  email: String
+  phone: String
+  address: Address
+}
+
+# total discount is calculated from the price(sale) and original price
+type LineItem {
+  productId: String!
+  variantId: String!
+  storeId: String!
+  quantity: Float!
+  price: Float!
+  orginalPrice: Float
+}
+
+type UserCustomer {
+  id: String
+  customer_code: String
+  data: AWSJSON
+}
+
+type Address {
+  addressLine1: String
+  addressLine2: String
+  country: String
+  region: String
+  regionCode: String
+  state: String
+  stateCode: String
+  city: String
+  cityCode: String
+  barangay: String
+  barangayCode: String
+  zipCode: String
 }

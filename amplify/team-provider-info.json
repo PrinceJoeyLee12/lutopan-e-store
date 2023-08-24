@@ -16,7 +16,21 @@
         "lutopanestore701051df": {}
       },
       "function": {
-        "UserFunction": {}
+        "checkoutFunction": {
+          "deploymentBucketName": "amplify-lutopanestore-dev-122806-deployment",
+          "s3Key": "amplify-builds/checkoutFunction-6b7844732f6c51364443-build.zip"
+        },
+        "userFunction": {
+          "deploymentBucketName": "amplify-lutopanestore-dev-122806-deployment",
+          "s3Key": "amplify-builds/userFunction-6672514c4b66546b6c6d-build.zip"
+        },
+        "lutopanestorelayer1": {
+          "deploymentBucketName": "amplify-lutopanestore-dev-122806-deployment",
+          "s3Key": "amplify-builds/lutopanestorelayer1-LambdaLayerVersion4376e527-build.zip"
+        }
+      },
+      "api": {
+        "lutopanestore": {}
       }
     }
   }

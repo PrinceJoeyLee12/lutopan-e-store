@@ -14,14 +14,6 @@
         "Mutation",
         "Subscription"
       ]
-    },
-    "storage": {
-      "Todo:@model(appsync)": [
-        "create",
-        "read",
-        "update",
-        "delete"
-      ]
     }
   },
   "lambdaLayers": [
